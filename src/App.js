@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPosts } from './redux/actions/index';
 
@@ -26,36 +26,57 @@ const tempArr = [
 	},
 ];
 
-function App({ fetchPosts, posts }) {
-	const fetch = () => {
-		fetchPosts();
+class App extends Component {
+	state = {
+		hideBtn: false,
 	};
 
-	const configButton = {
-		buttonText: 'Get posts',
-		emitEvent: fetch,
+	exampleMethod_updatesState = () => {
+		const { hideBtn } = this.state;
+		this.setState({
+			hideBtn: !hideBtn,
+		});
 	};
 
-	return (
-		<div className='App' data-test='App'>
-			<Header />
-			<section className='main'>
-				<Headline
-					header='Posts'
-					desc='Click the button to render posts'
-					tempArr={tempArr}
-				/>
-				<Button {...configButton} />
-				{posts.length > 0 && (
-					<div>
-						{posts.map((post) => (
-							<ListItem key={post.id} title={post.title} desc={post.body} />
-						))}
-					</div>
-				)}
-			</section>
-		</div>
-	);
+	exampleMethod_returnsAValue = (number) => {
+		return number + 1;
+	};
+
+	fetch = () => {
+		this.props.fetchPosts();
+		this.exampleMethod_updatesState();
+	};
+
+	render() {
+		const { posts } = this.props;
+		const { hideBtn } = this.state;
+
+		const configButton = {
+			buttonText: 'Get posts',
+			emitEvent: this.fetch,
+		};
+
+		return (
+			<div className='App' data-test='App'>
+				<Header />
+				<section className='main'>
+					<Headline
+						header='Posts'
+						desc='Click the button to render posts'
+						tempArr={tempArr}
+					/>
+					{!hideBtn && <Button {...configButton} />}
+					{posts.length > 0 && (
+						<div>
+							{posts.map((post) => (
+								<ListItem key={post.id} title={post.title} desc={post.body} />
+							))}
+						</div>
+					)}
+				</section>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = (state) => ({
