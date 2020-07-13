@@ -37,7 +37,7 @@ function App({ fetchPosts, posts }) {
 	};
 
 	return (
-		<div className='App'>
+		<div className='App' data-test='App'>
 			<Header />
 			<section className='main'>
 				<Headline
